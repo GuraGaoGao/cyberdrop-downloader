@@ -25,10 +25,12 @@ def create_directory(folder):
 
 
 ua = UserAgent(verify_ssl=False)
-create_directory("content");
 url = input("Input url to the album")
 response = requests.get(url, headers={'User-Agent':ua.chrome})
 soup = BeautifulSoup(response.text, 'html.parser')
+title = soup.find(id="title")
+print("Title of the album: " + title.text)
+create_directory(title.text.strip());
 links = soup.find_all("a", class_="image")
 i = 0
 for link in links:
@@ -43,7 +45,7 @@ for link in links:
         else:
             extension = ".jpg"
         i += 1
-        folder = "content/" + str(i)
+        folder = title.text.strip() +"/" + str(i)
         image_scrape(link['href'], extension, folder)
     except ValueError:
             pass
