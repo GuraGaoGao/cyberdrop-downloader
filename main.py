@@ -25,7 +25,7 @@ def create_directory(folder):
 
 
 ua = UserAgent(verify_ssl=False)
-url = input("Input url to the album")
+url = input("Input url to the album: ")
 response = requests.get(url, headers={'User-Agent':ua.chrome})
 soup = BeautifulSoup(response.text, 'html.parser')
 title = soup.find(id="title")
@@ -34,19 +34,20 @@ create_directory(title.text.strip());
 links = soup.find_all("a", class_="image")
 i = 0
 for link in links:
-    print(link)
+    print(link['href'])
     try:
-        if '.png' in link['href']:
-            extension = '.png'
-        elif '.jpg' in link['href'] or '.jpeg' in link['href']:
-            extension = '.jpeg'
-        elif '.gif' in link['href']:
-            extension = '.gif'
-        else:
-            extension = ".jpg"
+        # if '.png' in link['href']:
+        #     extension = '.png'
+        # elif '.jpg' in link['href'] or '.jpeg' in link['href']:
+        #     extension = '.jpeg'
+        # elif '.gif' in link['href']:
+        #     extension = '.gif'
+        # else:
+        #     extension = ".jpg"
+        extension = link['href'].split('.')
         i += 1
         folder = title.text.strip() +"/" + str(i)
-        image_scrape(link['href'], extension, folder)
+        image_scrape(link['href'], "."+extension[-1], folder)
     except ValueError:
             pass
 
