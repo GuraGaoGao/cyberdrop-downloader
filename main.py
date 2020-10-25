@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 import ssl
-import subprocess
 import os
 import pathlib
 
@@ -20,7 +19,6 @@ def create_directory(folder):
             os.makedirs(folder)
     except OSError:
         print("error creating a folder")
-        #error message is as horrible as i could think of so there is motivation to not make mistakes
         raise
 
 
@@ -36,18 +34,10 @@ i = 0
 for link in links:
     print(link['href'])
     try:
-        # if '.png' in link['href']:
-        #     extension = '.png'
-        # elif '.jpg' in link['href'] or '.jpeg' in link['href']:
-        #     extension = '.jpeg'
-        # elif '.gif' in link['href']:
-        #     extension = '.gif'
-        # else:
-        #     extension = ".jpg"
         extension = link['href'].split('.')
         i += 1
         folder = title.text.strip() +"/" + str(i)
         image_scrape(link['href'], "."+extension[-1], folder)
-    except ValueError:
+    except (ValueError, FileNotFoundError):
             pass
 
